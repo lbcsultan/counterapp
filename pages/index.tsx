@@ -10,7 +10,7 @@ import { useState } from 'react'
 
 const Home: NextPage = () => {
   const myAddress = useAddress()
-  const contractAddress = '0x5c907c6D9CAeEE816D7DA948D49CEe39F215f0a1'
+  const contractAddress = '0x794000Cf1B7CeCFA4355E1582ED6348895Eef766'
   const { contract, isLoading } = useContract(contractAddress)
 
   const [counter, setCounter] = useState<string | undefined>(undefined)
@@ -26,24 +26,52 @@ const Home: NextPage = () => {
     <div className={styles.container}>
       <main className={styles.main}>
         <ConnectWallet />
+        <div className={styles.title}>
+          <h3>이병천의 카운터 앱</h3>
+        </div>
 
-        <p>My Address : {myAddress}</p>
-        <h1>Counter Dapp</h1>
-        <h3>{counter}</h3>
+        <div className={styles.description}>
+          Contract address: {contractAddress} <br />
+          Host address: 0x42db748758CdE11A437694950fb873998eAB122b <br />
+          Your address: {myAddress}
+        </div>
 
-        <Web3Button
-          contractAddress={contractAddress}
-          action={() => getCounter()}
-        >
-          Refresh Counter
-        </Web3Button>
-        <br />
-        <Web3Button
-          contractAddress={contractAddress}
-          action={(contract) => contract.call('incrementCounter')}
-        >
-          +
-        </Web3Button>
+        <div className={styles.title}>
+          <h3>{counter}</h3>
+        </div>
+
+        <div className={styles.grid}>
+          <div className={styles.card}>
+            <Web3Button
+              contractAddress={contractAddress}
+              action={(contract) => {
+                contract.call('decrementCounter')
+                getCounter()
+              }}
+            >
+              <h1>-</h1>
+            </Web3Button>
+          </div>
+          <div className={styles.card}>
+            <Web3Button
+              contractAddress={contractAddress}
+              action={() => getCounter()}
+            >
+              <h1>Refresh Counter</h1>
+            </Web3Button>
+          </div>
+          <div className={styles.card}>
+            <Web3Button
+              contractAddress={contractAddress}
+              action={(contract) => {
+                contract.call('incrementCounter')
+                getCounter()
+              }}
+            >
+              <h1> + </h1>
+            </Web3Button>
+          </div>
+        </div>
       </main>
     </div>
   )
